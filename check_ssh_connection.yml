@@ -1,0 +1,25 @@
+- name: Check SSH connectivity
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Check SSH connectivity
+      wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        timeout: 5
+      register: ssh_check
+      ignore_errors: yes
+
+    - name: Write successful connections to file
+      local_action:
+        module: lineinfile
+        path: c:/path/to/successful_hosts.txt
+        line: "{{ inventory_hostname }}"
+      when: ssh_check is succeeded
+
+    - name: Write failed connections to file
+      local_action:
+        module: lineinfile
+        path: c:/path/to/failed_hosts.txt
+        line: "{{ inventory_hostname }}"
+      when: ssh_check is failed
