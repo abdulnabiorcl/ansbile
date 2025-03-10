@@ -1,0 +1,16 @@
+---
+- name: Create files locally and remotely
+  hosts: localhost
+  tasks:
+    - name: Create a file locally
+      copy:
+        content: "This is a local file created by Ansible."
+        dest: "./local_file.txt"
+
+- name: Create a file on remote hosts
+  hosts: remote
+  tasks:
+    - name: Create a file remotely
+      copy:
+        content: "This is a remote file created by Ansible."
+        dest: "/tmp/remote_file.txt"
